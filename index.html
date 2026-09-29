@@ -2,298 +2,1297 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>فروشگاه لباس مدیکس | Modern Style</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="تحلیل CBC">
+<meta name="theme-color" content="#007AFF">
+<title>تحلیل CBC | CBC Analyzer</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23e63946'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='white' font-family='Arial'%3E🩸%3C/text%3E%3C/svg%3E">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tahoma', sans-serif; }
-  body { background: #f5f5f7; color: #1d1d1f; }
+  :root {
+    --primary: #007AFF;
+    --danger: #FF3B30;
+    --warning: #FF9500;
+    --success: #34C759;
+    --bg: #F2F2F7;
+    --card: #FFFFFF;
+    --text: #1C1C1E;
+    --text-secondary: #8E8E93;
+    --border: #E5E5EA;
+    --radius: 14px;
+  }
 
-  /* هدر */
-  header {
-    background: #fff;
-    padding: 15px 40px;
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #000000;
+      --card: #1C1C1E;
+      --text: #FFFFFF;
+      --text-secondary: #98989D;
+      --border: #38383A;
+    }
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Tahoma, sans-serif;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    padding-bottom: 90px;
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* ===== Header ===== */
+  .app-header {
+    background: var(--card);
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  .app-header h1 {
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .app-header .subtitle {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* ===== Tabs ===== */
+  .tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+    z-index: 200;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  .tab-bar button {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 4px 0;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .tab-bar button.active {
+    color: var(--primary);
+  }
+
+  .tab-bar .tab-icon {
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  /* ===== Content ===== */
+  .tab-content {
+    display: none;
+    animation: fadeIn 0.25s ease;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== Card ===== */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    margin: 14px 16px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 14px 16px 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .form-group {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .form-group:last-child {
+    border-bottom: none;
+  }
+
+  .form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .form-group label .en {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+
+  .form-group input[type="number"],
+  .form-group input[type="text"],
+  .form-group select,
+  .form-group textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 15px;
+    width: 110px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--primary);
+  }
+
+  .form-group textarea {
+    width: 100%;
+    text-align: right;
+    min-height: 70px;
+    resize: vertical;
+    font-family: inherit;
+  }
+
+  .form-group.full {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .unit {
+    font-size: 11px;
+    color: var(--text-secondary);
+    min-width: 55px;
+    text-align: left;
+  }
+
+  /* ===== Buttons ===== */
+  .btn {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 14px 16px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.2s;
+    font-family: inherit;
+  }
+
+  .btn:active {
+    transform: scale(0.97);
+    opacity: 0.85;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+
+  .btn-danger {
+    background: var(--danger);
+    color: white;
+  }
+
+  .btn-secondary {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  /* ===== Empty State ===== */
+  .empty-state {
+    text-align: center;
+    padding: 70px 30px;
+    color: var(--text-secondary);
+  }
+
+  .empty-state .icon {
+    font-size: 60px;
+    opacity: 0.4;
+    margin-bottom: 16px;
+  }
+
+  .empty-state h3 {
+    font-size: 17px;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .empty-state p {
+    font-size: 13px;
+  }
+
+  /* ===== Summary Boxes ===== */
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 14px 16px;
+  }
+
+  .stat-box {
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 14px 8px;
+    text-align: center;
+  }
+
+  .stat-box .icon { font-size: 22px; margin-bottom: 4px; }
+  .stat-box .count { font-size: 22px; font-weight: 700; }
+  .stat-box .label { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+  .stat-box.green { color: var(--success); }
+  .stat-box.orange { color: var(--warning); }
+  .stat-box.red { color: var(--danger); }
+
+  /* ===== Result Item ===== */
+  .result-item {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .result-item:last-child { border-bottom: none; }
+
+  .result-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 8px;
+  }
+
+  .result-name {
+    flex: 1;
+  }
+
+  .result-name .fa {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .result-name .en {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .result-value {
+    text-align: left;
+  }
+
+  .result-value .num {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .result-value .unit {
+    font-size: 10px;
+    color: var(--text-secondary);
+    display: block;
+  }
+
+  .status-normal { color: var(--success); }
+  .status-warning { color: var(--warning); }
+  .status-danger { color: var(--danger); }
+
+  /* Range Bar */
+  .range-bar {
+    position: relative;
+    height: 8px;
+    background: var(--bg);
+    border-radius: 4px;
+    overflow: visible;
+    margin: 12px 0 6px;
+  }
+
+  .range-normal-zone {
+    position: absolute;
+    height: 100%;
+    background: rgba(52, 199, 89, 0.3);
+    border-radius: 4px;
+  }
+
+  .range-marker {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    transition: left 0.4s ease;
+  }
+
+  .range-labels {
     display: flex;
     justify-content: space-between;
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+
+  .explanation {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-top: 8px;
+    padding: 10px;
+    background: var(--bg);
+    border-radius: 8px;
+  }
+
+  /* ===== History Item ===== */
+  .history-item {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    position: sticky; top: 0; z-index: 100;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
   }
-  .logo { font-size: 24px; font-weight: bold; color: #e63946; }
-  nav a {
-    margin: 0 15px; text-decoration: none; color: #333;
-    font-size: 15px; transition: color 0.3s;
-  }
-  nav a:hover { color: #e63946; }
-  .cart-btn {
-    background: #e63946; color: #fff; border: none;
-    padding: 10px 20px; border-radius: 25px; cursor: pointer;
-    font-size: 14px; transition: 0.3s;
-  }
-  .cart-btn:hover { background: #c1121f; }
 
-  /* بنر */
-  .hero {
-    background: linear-gradient(135deg, #1d1d1f, #e63946);
-    color: #fff; text-align: center; padding: 80px 20px;
+  .history-item:active {
+    background: var(--bg);
   }
-  .hero h1 { font-size: 42px; margin-bottom: 15px; }
-  .hero p { font-size: 18px; margin-bottom: 25px; opacity: 0.9; }
-  .hero button {
-    background: #fff; color: #e63946; border: none;
-    padding: 14px 35px; border-radius: 30px;
-    font-size: 16px; font-weight: bold; cursor: pointer;
-    transition: 0.3s;
-  }
-  .hero button:hover { transform: scale(1.05); }
 
-  /* محصولات */
-  .products-section { padding: 60px 40px; }
-  .products-section h2 {
-    text-align: center; margin-bottom: 40px; font-size: 30px;
-  }
-  .products {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 25px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .product-card {
-    background: #fff; border-radius: 15px; overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  .product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  }
-  .product-img {
-    height: 220px;
-    background-size: cover;
-    background-position: center;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 60px;
-  }
-  .product-info { padding: 18px; text-align: center; }
-  .product-info h3 { font-size: 17px; margin-bottom: 8px; }
-  .price { color: #e63946; font-weight: bold; font-size: 18px; margin-bottom: 12px; }
-  .add-btn {
-    width: 100%; padding: 10px; background: #1d1d1f; color: #fff;
-    border: none; border-radius: 8px; cursor: pointer; transition: 0.3s;
-  }
-  .add-btn:hover { background: #e63946; }
+  .history-item:last-child { border-bottom: none; }
 
-  /* سبد خرید */
-  .cart-modal {
-    display: none; position: fixed; top: 0; right: 0; width: 380px;
-    height: 100%; background: #fff; box-shadow: -5px 0 20px rgba(0,0,0,0.2);
-    z-index: 1000; padding: 25px; overflow-y: auto;
+  .history-info {
+    flex: 1;
   }
-  .cart-modal.open { display: block; }
-  .cart-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #eee;
-  }
-  .cart-header h2 { font-size: 20px; }
-  .close-cart {
-    background: none; border: none; font-size: 24px; cursor: pointer; color: #999;
-  }
-  .cart-item {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 0; border-bottom: 1px solid #f0f0f0;
-  }
-  .cart-item-info h4 { font-size: 14px; margin-bottom: 4px; }
-  .cart-item-info span { color: #e63946; font-size: 13px; }
-  .remove-btn {
-    background: #ffe5e5; color: #e63946; border: none;
-    padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px;
-  }
-  .cart-total {
-    margin-top: 20px; padding-top: 15px; border-top: 2px solid #eee;
-    font-size: 18px; font-weight: bold; text-align: center;
-  }
-  .checkout-btn {
-    width: 100%; margin-top: 15px; padding: 14px;
-    background: #e63946; color: #fff; border: none;
-    border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold;
-  }
-  .checkout-btn:hover { background: #c1121f; }
-  .empty-cart { text-align: center; color: #999; padding: 40px 0; }
 
-  /* فوتر */
-  footer {
-    background: #1d1d1f; color: #fff; text-align: center;
-    padding: 30px; margin-top: 40px;
+  .history-date {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
   }
-  footer p { opacity: 0.7; font-size: 14px; }
 
-  /* نوتیفیکیشن */
+  .history-chips {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--bg);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .chip.red { color: var(--danger); }
+  .chip.blue { color: var(--primary); }
+  .chip.orange { color: var(--warning); }
+
+  .history-arrow {
+    color: var(--text-secondary);
+    font-size: 18px;
+  }
+
+  /* ===== Toast ===== */
   .toast {
-    position: fixed; bottom: 30px; left: 50%;
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
     transform: translateX(-50%) translateY(100px);
-    background: #1d1d1f; color: #fff;
-    padding: 14px 25px; border-radius: 30px;
-    opacity: 0; transition: 0.4s; z-index: 2000;
+    background: rgba(0,0,0,0.85);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 14px;
+    z-index: 1000;
+    opacity: 0;
+    transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: 85%;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
-  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-  @media (max-width: 600px) {
-    header { padding: 12px 15px; flex-wrap: wrap; gap: 10px; }
-    nav a { margin: 0 8px; font-size: 13px; }
-    .hero h1 { font-size: 28px; }
-    .products-section { padding: 40px 15px; }
-    .cart-modal { width: 100%; }
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* ===== Disclaimer ===== */
+  .disclaimer {
+    margin: 20px 16px;
+    padding: 12px 14px;
+    background: rgba(255, 59, 48, 0.08);
+    border: 1px solid rgba(255, 59, 48, 0.2);
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--danger);
+    display: flex;
+    gap: 8px;
+  }
+
+  /* ===== Segmented Control ===== */
+  .segment {
+    display: flex;
+    background: var(--bg);
+    border-radius: 9px;
+    padding: 3px;
+    gap: 2px;
+  }
+
+  .segment button {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .segment button.active {
+    background: var(--card);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    font-weight: 600;
+  }
+
+  .progress-ring {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border: 4px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: none;
+    z-index: 500;
+  }
+
+  .progress-ring.show { display: block; }
+
+  @keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  @media (max-width: 380px) {
+    .form-group input[type="number"] { width: 90px; }
+    .app-header h1 { font-size: 18px; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">🛍️ مدیکس</div>
-  <nav>
-    <a href="#">خانه</a>
-    <a href="#products">محصولات</a>
-    <a href="#">درباره ما</a>
-    <a href="#">تماس</a>
-  </nav>
-  <button class="cart-btn" onclick="toggleCart()">
-    🛒 سبد (<span id="cart-count">0</span>)
-  </button>
+<!-- ========== HEADER ========== -->
+<header class="app-header">
+  <h1>🩸 تحلیل CBC</h1>
+  <div class="subtitle" id="header-subtitle">آزمایش شمارش کامل خون</div>
 </header>
 
-<section class="hero">
-  <h1>به فروشگاه مدیکس خوش آمدید</h1>
-  <p>جدیدترین لباس‌های فصل با بهترین قیمت</p>
-  <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
-    مشاهده محصولات
-  </button>
-</section>
-
-<section class="products-section" id="products">
-  <h2>محصولات ما</h2>
-  <div class="products" id="products-grid"></div>
-</section>
-
-<!-- سبد خرید -->
-<div class="cart-modal" id="cart-modal">
-  <div class="cart-header">
-    <h2>🛒 سبد خرید</h2>
-    <button class="close-cart" onclick="toggleCart()">✕</button>
+<!-- ========== TAB: INPUT ========== -->
+<div class="tab-content active" id="tab-input">
+  
+  <div class="card">
+    <div class="card-header">اطلاعات پایه</div>
+    <div class="form-group">
+      <label>تاریخ آزمایش</label>
+      <input type="date" id="test-date" style="width:auto;">
+    </div>
+    <div class="form-group full">
+      <label style="margin-bottom:8px;">جنسیت</label>
+      <div class="segment" id="gender-segment">
+        <button data-value="male" class="active">مرد</button>
+        <button data-value="female">زن</button>
+      </div>
+    </div>
   </div>
-  <div id="cart-items"></div>
-  <div class="cart-total" id="cart-total"></div>
-  <button class="checkout-btn" onclick="checkout()">ادامه و پرداخت</button>
+
+  <div class="card">
+    <div class="card-header">CBC - شمارش کامل خون</div>
+    
+    <div class="form-group">
+      <label>گلبول سفید <span class="en">WBC</span></label>
+      <input type="number" step="0.1" inputmode="decimal" placeholder="—" data-key="wbc">
+      <span class="unit">10³/µL</span>
+    </div>
+    <div class="form-group">
+      <label>گلبول قرمز <span class="en">RBC</span></label>
+      <input type="number" step="0.01" inputmode="decimal" placeholder="—" data-key="rbc">
+      <span class="unit">10⁶/µL</span>
+    </div>
+    <div class="form-group">
+      <label>هموگلوبین <span class="en">HGB</span></label>
+      <input type="number" step="0.1" inputmode="decimal" placeholder="—" data-key="hemoglobin">
+      <span class="unit">g/dL</span>
+    </div>
+    <div class="form-group">
+      <label>هماتوکریت <span class="en">HCT</span></label>
+      <input type="number" step="0.1" inputmode="decimal" placeholder="—" data-key="hematocrit">
+      <span class="unit">%</span>
+    </div>
+    <div class="form-group">
+      <label>حجم متوسط گلبول <span class="en">MCV</span></label>
+      <input type="number" step="0.1" inputmode="decimal" placeholder="—" data-key="mcv">
+      <span class="unit">fL</span>
+    </div>
+    <div class="form-group">
+      <label>هموگلوبین متوسط <span class="en">MCH</span></label>
+      <input type="number" step="0.1" inputmode="decimal" placeholder="—" data-key="mch">
+      <span class="unit">pg</span>
+    </div>
+    <div class="form-group">
+      <label>غلظت هموگلوبین <span class="en">MCHC</span></label>
+      <input type="number" step="0.1" inputmode="decimal" placeholder="—" data-key="mchc">
+      <span class="unit">g/dL</span>
+    </div>
+    <div class="form-group">
+      <label>پلاکت <span class="en">PLT</span></label>
+      <input type="number" step="1" inputmode="decimal" placeholder="—" data-key="platelets">
+      <span class="unit">10³/µL</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">تفکیک گلبول سفید (اختیاری)</div>
+    
+    <div class="form-group">
+      <label>نوتروفیل <span class="en">NEUT</span></label>
+      <input type="number" step="0.1" inputmode="decimal" placeholder="—" data-key="neutrophils">
+      <span class="unit">%</span>
+    </div>
+    <div class="form-group">
+      <label>لنفوسیت <span class="en">LYMPH</span></label>
+      <input type="number" step="0.1" inputmode="decimal" placeholder="—" data-key="lymphocytes">
+      <span class="unit">%</span>
+    </div>
+    <div class="form-group">
+      <label>مونوسیت <span class="en">MONO</span></label>
+      <input type="number" step="0.1" inputmode="decimal" placeholder="—" data-key="monocytes">
+      <span class="unit">%</span>
+    </div>
+    <div class="form-group">
+      <label>ائوزینوفیل <span class="en">EOS</span></label>
+      <input type="number" step="0.1" inputmode="decimal" placeholder="—" data-key="eosinophils">
+      <span class="unit">%</span>
+    </div>
+    <div class="form-group">
+      <label>بازوفیل <span class="en">BASO</span></label>
+      <input type="number" step="0.1" inputmode="decimal" placeholder="—" data-key="basophils">
+      <span class="unit">%</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">یادداشت</div>
+    <div class="form-group full" style="border:none;">
+      <textarea id="note" placeholder="توضیحات اضافی..."></textarea>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" id="analyze-btn">📊 تحلیل آزمایش</button>
+  <button class="btn btn-secondary" id="reset-btn">🔄 پاک کردن فرم</button>
+
+  <div class="disclaimer">
+    <span>⚠️</span>
+    <span>این اپلیکیشن صرفاً جهت اطلاع‌رسانی و آموزش است و جایگزین تشخیص پزشک نیست. برای تفسیر دقیق حتماً با پزشک مشورت کنید.</span>
+  </div>
 </div>
 
-<footer>
-  <p>© 2025 فروشگاه مدیکس - تمامی حقوق محفوظ است.</p>
-</footer>
+<!-- ========== TAB: RESULTS ========== -->
+<div class="tab-content" id="tab-results">
+  <div id="results-container">
+    <div class="empty-state">
+      <div class="icon">📊</div>
+      <h3>هنوز نتیجه‌ای وجود ندارد</h3>
+      <p>از تب «ورودی» اطلاعات آزمایش را وارد کنید</p>
+    </div>
+  </div>
+</div>
 
-<div class="toast" id="toast">به سبد خرید اضافه شد ✓</div>
+<!-- ========== TAB: HISTORY ========== -->
+<div class="tab-content" id="tab-history">
+  <div id="history-container">
+    <div class="empty-state">
+      <div class="icon">📜</div>
+      <h3>تاریخچه خالی است</h3>
+      <p>آزمایش‌های تحلیل‌شده اینجا ذخیره می‌شوند</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TAB BAR ========== -->
+<nav class="tab-bar">
+  <button data-tab="input" class="active">
+    <span class="tab-icon">✏️</span>
+    <span>ورودی</span>
+  </button>
+  <button data-tab="results">
+    <span class="tab-icon">📊</span>
+    <span>نتایج</span>
+  </button>
+  <button data-tab="history">
+    <span class="tab-icon">📜</span>
+    <span>تاریخچه</span>
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+<div class="progress-ring" id="loader"></div>
 
 <script>
-// لیست محصولات
-const products = [
-  { id: 1, name: 'تی‌شرت نخی مردانه', price: 350000, emoji: '👕', bg: '#ffe5e5' },
-  { id: 2, name: 'شلوار جین آبی', price: 780000, emoji: '👖', bg: '#e5f0ff' },
-  { id: 3, name: 'پیراهن مجلسی', price: 950000, emoji: '👔', bg: '#f0e5ff' },
-  { id: 4, name: 'کاپشن زمستانی', price: 1850000, emoji: '🧥', bg: '#e5fff0' },
-  { id: 5, name: 'کتونی اسپرت', price: 1200000, emoji: '👟', bg: '#fff5e5' },
-  { id: 6, name: 'کلاه لبه‌دار', price: 280000, emoji: '🧢', bg: '#e5f5ff' },
-  { id: 7, name: 'شال گردن', price: 220000, emoji: '🧣', bg: '#ffe5f5' },
-  { id: 8, name: 'کیف دستی', price: 890000, emoji: '👜', bg: '#f5ffe5' },
-];
+/* ============================================================
+   داده‌ها و محدوده‌های مرجع
+============================================================ */
+const RANGES = {
+  wbc:        { male: [4.0, 11.0],    female: [4.0, 11.0],    name: 'گلبول سفید', en: 'WBC',  unit: '10³/µL' },
+  rbc:        { male: [4.5, 5.9],     female: [4.1, 5.1],     name: 'گلبول قرمز', en: 'RBC',  unit: '10⁶/µL' },
+  hemoglobin: { male: [13.5, 17.5],   female: [12.0, 15.5],   name: 'هموگلوبین', en: 'HGB',  unit: 'g/dL' },
+  hematocrit: { male: [41.0, 53.0],   female: [36.0, 46.0],   name: 'هماتوکریت', en: 'HCT',  unit: '%' },
+  mcv:        { male: [80.0, 100.0],  female: [80.0, 100.0],  name: 'حجم متوسط گلبول', en: 'MCV', unit: 'fL' },
+  mch:        { male: [27.0, 33.0],   female: [27.0, 33.0],   name: 'هموگلوبین متوسط', en: 'MCH', unit: 'pg' },
+  mchc:       { male: [32.0, 36.0],   female: [32.0, 36.0],   name: 'غلظت هموگلوبین', en: 'MCHC', unit: 'g/dL' },
+  platelets:  { male: [150, 450],     female: [150, 450],     name: 'پلاکت', en: 'PLT', unit: '10³/µL' },
+  neutrophils:{ male: [40.0, 70.0],   female: [40.0, 70.0],   name: 'نوتروفیل', en: 'NEUT', unit: '%' },
+  lymphocytes:{ male: [20.0, 45.0],   female: [20.0, 45.0],   name: 'لنفوسیت', en: 'LYMPH', unit: '%' },
+  monocytes:  { male: [2.0, 10.0],    female: [2.0, 10.0],    name: 'مونوسیت', en: 'MONO', unit: '%' },
+  eosinophils:{ male: [1.0, 6.0],     female: [1.0, 6.0],     name: 'ائوزینوفیل', en: 'EOS', unit: '%' },
+  basophils:  { male: [0.0, 2.0],     female: [0.0, 2.0],     name: 'بازوفیل', en: 'BASO', unit: '%' }
+};
 
-let cart = [];
+/* ============================================================
+   توضیحات تفسیری
+============================================================ */
+const EXPLANATIONS = {
+  wbc: {
+    low: 'کاهش گلبول سفید (لکوپنی): ممکن است به دلیل عفونت ویروسی، مصرف برخی داروها یا مشکل مغز استخوان باشد.',
+    high: 'افزایش گلبول سفید (لکوسیتوز): معمولاً نشانه عفونت باکتریایی، التهاب، استرس یا مصرف کورتون است.',
+    normal: 'تعداد گلبول‌های سفید در محدوده طبیعی است.'
+  },
+  rbc: {
+    low: 'کاهش گلبول قرمز: ممکن است نشانه کم‌خونی، خونریزی یا کمبود مواد مغذی باشد.',
+    high: 'افزایش گلبول قرمز: ممکن است به دلیل کم‌آبی، سیگار، زندگی در ارتفاع یا پلی‌سیتمی باشد.',
+    normal: 'تعداد گلبول‌های قرمز طبیعی است.'
+  },
+  hemoglobin: {
+    low: 'هموگلوبین پایین: نشانه کم‌خونی. علل شایع: کمبود آهن، خونریزی گوارشی یا بیماری مزمن.',
+    high: 'هموگلوبین بالا: ممکن است به دلیل کم‌آبی، بیماری قلبی، سیگار یا زندگی در ارتفاع باشد.',
+    normal: 'هموگلوبین در محدوده طبیعی است.'
+  },
+  hematocrit: {
+    low: 'هماتوکریت پایین: نشانه کم‌خونی، خونریزی یا کم‌آبی شدید.',
+    high: 'هماتوکریت بالا: ممکن است به دلیل کم‌آبی، پلی‌سیتمی یا بیماری قلبی باشد.',
+    normal: 'هماتوکریت طبیعی است.'
+  },
+  mcv: {
+    low: 'MCV پایین: کم‌خونی میکروسیتیک (مثل کمبود آهن یا تالاسمی).',
+    high: 'MCV بالا: کم‌خونی ماکروسیتیک (مثل کمبود ویتامین B12 یا فولات).',
+    normal: 'MCV طبیعی است.'
+  },
+  mch: {
+    low: 'MCH پایین: کم‌خونی هیپوکرومیک (معمولاً کمبود آهن).',
+    high: 'MCH بالا: کم‌خونی ماکروسیتیک.',
+    normal: 'MCH طبیعی است.'
+  },
+  mchc: {
+    low: 'MCHC پایین: کم‌خونی هیپوکرومیک (کمبود آهن یا تالاسمی).',
+    high: 'MCHC بالا: اسفروسیتوز ارثی یا کم‌آبی.',
+    normal: 'MCHC طبیعی است.'
+  },
+  platelets: {
+    low: 'پلاکت پایین (ترومبوسیتوپنی): خطر خونریزی. علل: عفونت، دارو، بیماری خودایمنی یا مشکل مغز استخوان.',
+    high: 'پلاکت بالا (ترومبوسیتوز): خطر لخته شدن خون. علل: التهاب، کمبود آهن یا بیماری مغز استخوان.',
+    normal: 'تعداد پلاکت‌ها طبیعی است.'
+  },
+  neutrophils: {
+    low: 'نوتروفیل پایین (نوتروپنی): خطر عفونت. علل: عفونت ویروسی، دارو یا مشکل مغز استخوان.',
+    high: 'نوتروفیل بالا: معمولاً عفونت باکتریایی یا التهاب.',
+    normal: 'نوتروفیل‌ها طبیعی هستند.'
+  },
+  lymphocytes: {
+    low: 'لنفوسیت پایین (لنفوپنی): استرس، کورتون یا عفونت حاد.',
+    high: 'لنفوسیت بالا (لنفوسیتوز): عفونت ویروسی، سیاه‌سرفه یا بیماری لنفاوی.',
+    normal: 'لنفوسیت‌ها طبیعی هستند.'
+  },
+  monocytes: {
+    low: 'مونوسیت پایین: معمولاً اهمیت بالینی کمتری دارد.',
+    high: 'مونوسیت بالا: عفونت مزمن، بیماری خودایمنی یا برخی سرطان‌ها.',
+    normal: 'مونوسیت‌ها طبیعی هستند.'
+  },
+  eosinophils: {
+    low: 'ائوزینوفیل پایین: معمولاً ناشی از استرس یا کورتون.',
+    high: 'ائوزینوفیل بالا: آلرژی، آسم یا عفونت انگلی.',
+    normal: 'ائوزینوفیل‌ها طبیعی هستند.'
+  },
+  basophils: {
+    low: 'بازوفیل پایین: معمولاً اهمیت بالینی کمتری دارد.',
+    high: 'بازوفیل بالا: واکنش آلرژیک شدید یا بیماری میلوسیتیک.',
+    normal: 'بازوفیل‌ها طبیعی هستند.'
+  }
+};
 
-// نمایش محصولات
-const grid = document.getElementById('products-grid');
-products.forEach(p => {
-  const card = document.createElement('div');
-  card.className = 'product-card';
-  card.innerHTML = `
-    <div class="product-img" style="background:${p.bg}">${p.emoji}</div>
-    <div class="product-info">
-      <h3>${p.name}</h3>
-      <div class="price">${p.price.toLocaleString('fa-IR')} تومان</div>
-      <button class="add-btn" onclick="addToCart(${p.id})">افزودن به سبد</button>
+/* ============================================================
+   وضعیت اپلیکیشن
+============================================================ */
+let state = {
+  currentGender: 'male',
+  currentResults: null,
+  history: []
+};
+
+const STORAGE_KEY = 'cbc_history_v1';
+
+/* ============================================================
+   راه‌اندازی
+============================================================ */
+function init() {
+  // تاریخ امروز
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('test-date').value = today;
+
+  // بارگذاری تاریخچه
+  loadHistory();
+
+  // Event Listeners
+  setupTabBar();
+  setupGenderSegment();
+  setupButtons();
+  setupInputs();
+}
+
+/* ============================================================
+   تب‌ها
+============================================================ */
+function setupTabBar() {
+  document.querySelectorAll('.tab-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+
+      document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      btn.classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+
+      // بروزرسانی تاریخچه وقتی روی تب کلیک شد
+      if (tab === 'history') renderHistory();
+      if (tab === 'results') renderResults();
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+}
+
+/* ============================================================
+   انتخاب جنسیت
+============================================================ */
+function setupGenderSegment() {
+  document.querySelectorAll('#gender-segment button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#gender-segment button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.currentGender = btn.dataset.value;
+    });
+  });
+}
+
+/* ============================================================
+   دکمه‌ها
+============================================================ */
+function setupButtons() {
+  document.getElementById('analyze-btn').addEventListener('click', analyze);
+  document.getElementById('reset-btn').addEventListener('click', resetForm);
+}
+
+function setupInputs() {
+  // Enter → برو به فیلد بعدی
+  document.querySelectorAll('input[type="number"]').forEach((input, idx, arr) => {
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && idx < arr.length - 1) {
+        arr[idx + 1].focus();
+      }
+    });
+  });
+}
+
+/* ============================================================
+   تحلیل
+============================================================ */
+function analyze() {
+  const data = {
+    date: document.getElementById('test-date').value,
+    gender: state.currentGender,
+    note: document.getElementById('note').value.trim()
+  };
+
+  // جمع‌آوری مقادیر
+  let hasAny = false;
+  document.querySelectorAll('input[type="number"][data-key]').forEach(input => {
+    const key = input.dataset.key;
+    const val = parseFloat(input.value);
+    if (!isNaN(val)) {
+      data[key] = val;
+      hasAny = true;
+    } else {
+      data[key] = null;
+    }
+  });
+
+  if (!hasAny) {
+    showToast('⚠️ حداقل یک مقدار وارد کنید');
+    return;
+  }
+
+  // محاسبه نتایج
+  const results = computeResults(data);
+
+  // ذخیره در state
+  state.currentResults = { data, results };
+
+  // ذخیره در تاریخچه
+  saveToHistory(data);
+
+  // تغییر تب به نتایج
+  document.querySelector('[data-tab="results"]').click();
+
+  showToast('✅ تحلیل با موفقیت انجام شد');
+}
+
+/* ============================================================
+   محاسبه نتایج
+============================================================ */
+function computeResults(data) {
+  const gender = data.gender;
+  const results = [];
+
+  for (const key in RANGES) {
+    const val = data[key];
+    if (val === null || val === undefined) continue;
+
+    const range = RANGES[key][gender];
+    const [low, high] = range;
+    const status = getStatus(val, low, high);
+
+    results.push({
+      key,
+      name: RANGES[key].name,
+      en: RANGES[key].en,
+      unit: RANGES[key].unit,
+      value: val,
+      low, high,
+      status,
+      explanation: EXPLANATIONS[key][status]
+    });
+  }
+
+  return results;
+}
+
+function getStatus(value, low, high) {
+  const span = high - low;
+  const criticalLow = low - span * 0.3;
+  const criticalHigh = high + span * 0.3;
+
+  if (value < criticalLow || value > criticalHigh) return 'critical';
+  if (value < low) return 'low';
+  if (value > high) return 'high';
+  return 'normal';
+}
+
+/* ============================================================
+   نمایش نتایج
+============================================================ */
+function renderResults() {
+  const container = document.getElementById('results-container');
+
+  if (!state.currentResults) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">📊</div>
+        <h3>هنوز نتیجه‌ای وجود ندارد</h3>
+        <p>از تب «ورودی» اطلاعات آزمایش را وارد کنید</p>
+      </div>`;
+    return;
+  }
+
+  const { data, results } = state.currentResults;
+  const normal = results.filter(r => r.status === 'normal').length;
+  const warning = results.filter(r => r.status === 'low' || r.status === 'high').length;
+  const critical = results.filter(r => r.status === 'critical').length;
+
+  let html = `
+    <div class="card">
+      <div class="card-header">خلاصه</div>
+      <div class="summary">
+        <div class="stat-box green">
+          <div class="icon">✅</div>
+          <div class="count">${normal}</div>
+          <div class="label">طبیعی</div>
+        </div>
+        <div class="stat-box orange">
+          <div class="icon">⚠️</div>
+          <div class="count">${warning}</div>
+          <div class="label">غیرطبیعی</div>
+        </div>
+        <div class="stat-box red">
+          <div class="icon">🚨</div>
+          <div class="count">${critical}</div>
+          <div class="label">بحرانی</div>
+        </div>
+      </div>
     </div>
   `;
-  grid.appendChild(card);
-});
 
-// افزودن به سبد
-function addToCart(id) {
-  const product = products.find(p => p.id === id);
-  const existing = cart.find(item => item.id === id);
-  if (existing) {
-    existing.qty++;
-  } else {
-    cart.push({ ...product, qty: 1 });
-  }
-  updateCart();
-  showToast('✓ به سبد خرید اضافه شد');
-}
+  // بخش هر پارامتر
+  html += `<div class="card"><div class="card-header">نتایج جزئی</div>`;
+  results.forEach(r => {
+    html += renderResultItem(r);
+  });
+  html += `</div>`;
 
-// حذف از سبد
-function removeFromCart(id) {
-  cart = cart.filter(item => item.id !== id);
-  updateCart();
-}
+  // بخش تفسیر
+  const abnormal = results.filter(r => r.status !== 'normal' && r.status !== 'critical');
+  const criticals = results.filter(r => r.status === 'critical');
 
-// بروزرسانی سبد
-function updateCart() {
-  const countEl = document.getElementById('cart-count');
-  const itemsEl = document.getElementById('cart-items');
-  const totalEl = document.getElementById('cart-total');
-
-  const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
-  countEl.textContent = totalQty;
-
-  if (cart.length === 0) {
-    itemsEl.innerHTML = '<div class="empty-cart">سبد خرید خالی است 🛒</div>';
-    totalEl.textContent = '';
-    return;
+  if (criticals.length > 0) {
+    html += `<div class="card">
+      <div class="card-header" style="color:var(--danger);">🚨 مقادیر بحرانی</div>`;
+    criticals.forEach(r => {
+      html += `<div class="result-item">
+        <div style="font-size:13px;line-height:1.7;color:var(--danger);">
+          <strong>${r.name} (${r.en}):</strong> ${r.explanation}
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
   }
 
-  itemsEl.innerHTML = cart.map(item => `
-    <div class="cart-item">
-      <div class="cart-item-info">
-        <h4>${item.emoji} ${item.name} × ${item.qty}</h4>
-        <span>${(item.price * item.qty).toLocaleString('fa-IR')} تومان</span>
+  if (abnormal.length > 0) {
+    html += `<div class="card">
+      <div class="card-header" style="color:var(--warning);">⚠️ موارد نیازمند توجه</div>`;
+    abnormal.forEach(r => {
+      html += `<div class="result-item">
+        <div style="font-size:13px;line-height:1.7;">
+          <strong>${r.name} (${r.en}):</strong> ${r.explanation}
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  if (criticals.length === 0 && abnormal.length === 0) {
+    html += `<div class="card">
+      <div class="result-item" style="text-align:center;padding:24px;">
+        <div style="font-size:40px;margin-bottom:8px;">🎉</div>
+        <div style="color:var(--success);font-weight:600;">همه پارامترها در محدوده طبیعی هستند</div>
       </div>
-      <button class="remove-btn" onclick="removeFromCart(${item.id})">حذف</button>
+    </div>`;
+  }
+
+  // یادداشت
+  if (data.note) {
+    html += `<div class="card">
+      <div class="card-header">یادداشت</div>
+      <div class="result-item" style="font-size:13px;line-height:1.7;">${escapeHtml(data.note)}</div>
+    </div>`;
+  }
+
+  // Disclaimer
+  html += `<div class="disclaimer">
+    <span>⚠️</span>
+    <span>این تحلیل صرفاً جنبه آموزشی دارد و جایگزین نظر پزشک متخصص نیست.</span>
+  </div>`;
+
+  container.innerHTML = html;
+}
+
+function renderResultItem(r) {
+  const statusClass = r.status === 'normal' ? 'status-normal' :
+                     (r.status === 'critical' ? 'status-danger' : 'status-warning');
+  const statusLabel = {
+    normal: 'طبیعی',
+    low: 'پایین',
+    high: 'بالا',
+    critical: 'بحرانی'
+  }[r.status];
+
+  const markerIcon = {
+    normal: '✓',
+    low: '↓',
+    high: '↑',
+    critical: '!'
+  }[r.status];
+
+  // محاسبه موقعیت نوار
+  const span = r.high - r.low;
+  const minV = Math.min(r.low - span * 0.5, r.value - span * 0.2);
+  const maxV = Math.max(r.high + span * 0.5, r.value + span * 0.2);
+  const total = maxV - minV;
+
+  const normalStart = ((r.low - minV) / total) * 100;
+  const normalEnd = ((r.high - minV) / total) * 100;
+  const valuePos = Math.min(Math.max(((r.value - minV) / total) * 100, 0), 100);
+
+  const markerColor = r.status === 'normal' ? 'var(--success)' :
+                      (r.status === 'critical' ? 'var(--danger)' : 'var(--warning)');
+
+  return `
+    <div class="result-item">
+      <div class="result-top">
+        <div class="result-name">
+          <div class="fa">${r.name}</div>
+          <div class="en">${r.en}</div>
+        </div>
+        <div class="result-value">
+          <span class="num ${statusClass}">${formatNumber(r.value)}</span>
+          <span class="unit">${r.unit}</span>
+        </div>
+        <div style="font-size:18px;color:${markerColor};font-weight:bold;">${markerIcon}</div>
+      </div>
+
+      <div class="range-bar">
+        <div class="range-normal-zone" style="left:${normalStart}%; width:${normalEnd - normalStart}%;"></div>
+        <div class="range-marker" style="left:${valuePos}%; background:${markerColor};"></div>
+      </div>
+
+      <div class="range-labels">
+        <span>${formatNumber(r.low)}</span>
+        <span style="color:var(--text-secondary);">محدوده نرمال • ${statusLabel}</span>
+        <span>${formatNumber(r.high)}</span>
+      </div>
+
+      <div class="explanation">${r.explanation}</div>
     </div>
-  `).join('');
-
-  const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
-  totalEl.textContent = `مجموع: ${total.toLocaleString('fa-IR')} تومان`;
+  `;
 }
 
-// باز/بسته کردن سبد
-function toggleCart() {
-  document.getElementById('cart-modal').classList.toggle('open');
+/* ============================================================
+   تاریخچه
+============================================================ */
+function saveToHistory(data) {
+  const entry = {
+    id: Date.now(),
+    ...data
+  };
+
+  state.history.unshift(entry);
+
+  // حداکثر ۵۰ مورد
+  if (state.history.length > 50) {
+    state.history = state.history.slice(0, 50);
+  }
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.history));
 }
 
-// پرداخت
-function checkout() {
-  if (cart.length === 0) {
-    showToast('سبد خرید خالی است!');
+function loadHistory() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    state.history = raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    state.history = [];
+  }
+}
+
+function renderHistory() {
+  const container = document.getElementById('history-container');
+
+  if (state.history.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">📜</div>
+        <h3>تاریخچه خالی است</h3>
+        <p>آزمایش‌های تحلیل‌شده اینجا ذخیره می‌شوند</p>
+      </div>`;
     return;
   }
-  alert('✅ سفارش شما با موفقیت ثبت شد!\nاز خرید شما متشکریم 🌹');
-  cart = [];
-  updateCart();
-  toggleCart();
+
+  let html = `<div class="card"><div class="card-header">${state.history.length} آزمایش ذخیره شده</div>`;
+
+  state.history.forEach(entry => {
+    const dateStr = entry.date || '—';
+    const genderLabel = entry.gender === 'male' ? 'مرد' : 'زن';
+
+    let chips = '';
+    if (entry.hemoglobin) chips += `<span class="chip red">🩸 HGB: ${entry.hemoglobin}</span>`;
+    if (entry.wbc) chips += `<span class="chip blue">🛡️ WBC: ${entry.wbc}</span>`;
+    if (entry.platelets) chips += `<span class="chip orange">🔶 PLT: ${entry.platelets}</span>`;
+
+    html += `
+      <div class="history-item" onclick="loadHistoryItem(${entry.id})">
+        <div class="history-info">
+          <div class="history-date">📅 ${dateStr} <span style="color:var(--text-secondary);font-weight:400;font-size:12px;">• ${genderLabel}</span></div>
+          <div class="history-chips">${chips || '<span class="chip">—</span>'}</div>
+        </div>
+        <div class="history-arrow">‹</div>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+
+  // دکمه پاک کردن همه
+  html += `<button class="btn btn-danger" onclick="clearHistory()">🗑️ پاک کردن همه تاریخچه</button>`;
+
+  container.innerHTML = html;
 }
 
-// نوتیفیکیشن
+function loadHistoryItem(id) {
+  const entry = state.history.find(e => e.id === id);
+  if (!entry) return;
+
+  // پر کردن فرم
+  document.getElementById('test-date').value = entry.date || '';
+  document.getElementById('note').value = entry.note || '';
+
+  // جنسیت
+  state.currentGender = entry.gender || 'male';
+  document.querySelectorAll('#gender-segment button').forEach(b => {
+    b.classList.toggle('active', b.dataset.value === state.currentGender);
+  });
+
+  // مقادیر
+  document.querySelectorAll('input[type="number"][data-key]').forEach(input => {
+    const key = input.dataset.key;
+    input.value = entry[key] != null ? entry[key] : '';
+  });
+
+  // تحلیل مجدد
+  const results = computeResults(entry);
+  state.currentResults = { data: entry, results };
+
+  // برو به نتایج
+  document.querySelector('[data-tab="results"]').click();
+  showToast('📂 آزمایش بارگذاری شد');
+}
+
+function clearHistory() {
+  if (!confirm('همه تاریخچه پاک شود؟')) return;
+  state.history = [];
+  localStorage.removeItem(STORAGE_KEY);
+  renderHistory();
+  showToast('🗑️ تاریخچه پاک شد');
+}
+
+/* ============================================================
+   پاک کردن فرم
+============================================================ */
+function resetForm() {
+  if (!confirm('فرم پاک شود؟')) return;
+
+  document.querySelectorAll('input[type="number"][data-key]').forEach(input => {
+    input.value = '';
+  });
+  document.getElementById('note').value = '';
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('test-date').value = today;
+
+  state.currentResults = null;
+  showToast('🔄 فرم پاک شد');
+}
+
+/* ============================================================
+   Toast
+============================================================ */
+let toastTimer;
 function showToast(msg) {
   const toast = document.getElementById('toast');
   toast.textContent = msg;
   toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2000);
+
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2200);
 }
+
+/* ============================================================
+   ابزار کمکی
+============================================================ */
+function formatNumber(n) {
+  if (n === null || n === undefined) return '—';
+  const num = parseFloat(n);
+  if (isNaN(num)) return '—';
+  if (Number.isInteger(num)) return num.toString();
+  return num.toFixed(2).replace(/\.?0+$/, '');
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+/* ============================================================
+   شروع
+============================================================ */
+document.addEventListener('DOMContentLoaded', init);
 </script>
 
 </body>
